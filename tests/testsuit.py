@@ -2,6 +2,7 @@ import time
 
 from selenium.webdriver.support.select import Select
 
+from pageObjects.demoSite import demoSite
 from pageObjects.homePage import homePage
 from pageObjects.seleniumTraining import seliniumTraining
 from pageObjects.youTube import youTube
@@ -10,8 +11,6 @@ from utilities.baseclass import baseClass
 
 class Test_suit(baseClass):
 
-    # # TQA001 : Open website > In Youtube section tap on subscribe >Tap on youtube Channel link
-    # #  > New window openes > Check both the links navigate to the same channel
     def test_TQA001(self):
         homepage = homePage(self.driver)
 
@@ -25,6 +24,7 @@ class Test_suit(baseClass):
         youtube = youTube(self.driver)
         text1 = youtube.channelName().text
         print("The Channel navigated via subscribe button is " + text1)
+        self.driver.close()
 
         # # Switching back to parent window
         self.driver.switch_to.window(self.driver.window_handles[0])
@@ -37,8 +37,6 @@ class Test_suit(baseClass):
         print("The channel navigated via Youtube Link is " + text2)
 
 
-    # # TQA002 : Open website > Tap on Selenium training tab >
-    # # Tap on Go to regestration button > Enter required fields > Confirmation message should be displayed
     def test_TQA002(self):
         homepage = homePage(self.driver)
         homepage.seleniumButton().click()
@@ -61,3 +59,53 @@ class Test_suit(baseClass):
         toast = seleniumtraining.error_Msg().text
         print(toast)
         assert "Unable" in toast
+
+
+
+    def test_TQA003(self):
+        homepage = homePage(self.driver)
+        homepage.demoSite().click()
+
+        self.driver.switch_to.window(self.driver.window_handles[1])
+
+        demosite = demoSite(self.driver)
+        self.driver.execute_script("window.scrollTo(0,500)")
+        demosite.Elements().click()
+        demosite.radioButton().click()
+        demosite.impressiveButton().click()
+        msg = demosite.confirmationMgs().text
+        assert "Impressive" == msg
+        print("The selected radio button is "+msg)
+
+
+# TQA004 : Open website > Tap on demo site > Tap on web tables > Delete the entries if any > Add a new entry
+#          > make sure it is displayed under the table
+
+    def test_TQA004(self):
+        homepage = homePage(self.driver)
+        homepage.demoSite().click()
+
+        self.driver.switch_to.window(self.driver.window_handles[1])
+
+        demosite = demoSite(self.driver)
+        self.driver.execute_script("window.scrollTo(0,500)")
+        demosite.Elements().click()
+        demosite.webTables().click()
+
+        # Deleting the entries
+        a = demosite.deleteButton()
+        # counting th number of entries through Delete Button
+        for i in a:b
+            n=0
+            n=n+1
+            demosite.deleteButton().click()
+            time.sleep(3)
+            print(n)
+
+
+
+
+
+
+
+        time.sleep(2)
